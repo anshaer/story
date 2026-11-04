@@ -1,6 +1,0 @@
-3D 壓克力磚 嵌入說明 (Embed Guide):
-
-1. 將解鎖後的 index.html 與 image.png 放置於您的 Web 伺服器同一個目錄中。
-2. 在網頁中貼上以下 <iframe> 嵌入碼即可呈現 80% 視窗大小的透明 3D 壓克力立牌：
-
-<iframe src="index.html" style="width:80vw; height:80vh; border:none; background:transparent;" allowtransparency="true"></iframe>
