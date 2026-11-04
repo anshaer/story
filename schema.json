@@ -1,0 +1,324 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Story Fork Project v1",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+      "not": {
+        "enum": [
+          "constructor",
+          "prototype",
+          "__proto__"
+        ]
+      }
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+      "not": {
+        "enum": [
+          "constructor",
+          "prototype",
+          "__proto__"
+        ]
+      }
+    },
+    "variables": {
+      "type": "object",
+      "propertyNames": {
+        "allOf": [
+          {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+            "not": {
+              "enum": [
+                "constructor",
+                "prototype",
+                "__proto__"
+              ]
+            }
+          },
+          {
+            "not": {
+              "const": "round"
+            }
+          }
+        ]
+      },
+      "additionalProperties": {
+        "type": [
+          "number",
+          "string",
+          "boolean"
+        ]
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    }
+  },
+  "required": [
+    "version",
+    "id",
+    "title",
+    "start",
+    "variables",
+    "assets",
+    "nodes"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+          "not": {
+            "enum": [
+              "constructor",
+              "prototype",
+              "__proto__"
+            ]
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "src": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string",
+          "pattern": "^data:(image|audio|video)/"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "additionalProperties": true
+    },
+    "condition": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "op": {
+          "enum": [
+            "==",
+            "!=",
+            ">",
+            ">=",
+            "<",
+            "<="
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "op",
+        "value"
+      ],
+      "additionalProperties": true
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "set": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "number",
+              "string",
+              "boolean"
+            ]
+          }
+        },
+        "add": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "set",
+        "add"
+      ],
+      "additionalProperties": true
+    },
+    "choice": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+          "not": {
+            "enum": [
+              "constructor",
+              "prototype",
+              "__proto__"
+            ]
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "effects": {
+          "$ref": "#/$defs/effects"
+        },
+        "hideWhenLocked": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text",
+        "target"
+      ],
+      "additionalProperties": true
+    },
+    "node": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+          "not": {
+            "enum": [
+              "constructor",
+              "prototype",
+              "__proto__"
+            ]
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "music": {
+          "type": "string"
+        },
+        "sound": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/choice"
+          }
+        },
+        "ending": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+              "not": {
+                "enum": [
+                  "constructor",
+                  "prototype",
+                  "__proto__"
+                ]
+              }
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "text",
+        "choices"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "ending"
+            ]
+          },
+          "then": {
+            "properties": {
+              "choices": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "choices": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
